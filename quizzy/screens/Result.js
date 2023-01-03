@@ -3,12 +3,9 @@ import React from 'react';
 import Navigation from '../navigation/Navigation';
 
 const Result = ({navigation, route}) => {
-  const score = route.params;
+  const {score} = route.params;
   return (
     <View>
-      <View>
-        <Text>Result</Text>
-      </View>
       <View>
         <Image style={styles.pic} source={require('../pictures/quiz.png')} />
       </View>
@@ -16,7 +13,10 @@ const Result = ({navigation, route}) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Home')}>
-          <Text>{score}</Text>
+          <Text style={{fontSize: 35, fontWeight: '800', alignSelf: 'center'}}>
+            {' '}
+            Your score is {score}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

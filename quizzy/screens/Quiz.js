@@ -16,6 +16,7 @@ const Quiz = ({navigation}) => {
     }
   }
   const quizz = async () => {
+    console.log('hi');
     try {
       const result = await fetch(
         `https://opentdb.com/api.php?amount=10&encode=url3986`,
@@ -48,9 +49,12 @@ const Quiz = ({navigation}) => {
     if (str == questions.correct_answer) {
       setScore(score + 10);
     }
-    setNo(quesNo + 1);
+    if (quesNo < 9) setNo(quesNo + 1);
+    else {
+      navigation.navigate('Result', {score});
+    }
   };
-  console.log(score);
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
@@ -107,7 +111,9 @@ const Quiz = ({navigation}) => {
             onPress={() => {
               handleAnswer(options[1]);
             }}>
-            <Text>{decodeURIComponent(options[1])}</Text>
+            <Text style={{color: 'white', fontWeight: '900', fontSize: 22}}>
+              {decodeURIComponent(options[1])}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -115,24 +121,54 @@ const Quiz = ({navigation}) => {
             onPress={() => {
               handleAnswer(options[0]);
             }}>
-            <Text>{decodeURIComponent(options[0])}</Text>
+            <Text style={{color: 'white', fontWeight: '900', fontSize: 22}}>
+              {decodeURIComponent(options[0])}
+            </Text>
           </TouchableOpacity>
         </View>
       )}
       <View style={styles.bottom}>
         <TouchableOpacity style={{backgroundColor: 'purple', borderRadius: 7}}>
-          <Text style={{padding: 10, color: 'white'}}>Previous</Text>
+          <Text
+            style={{
+              padding: 15,
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 16,
+              width: 100,
+            }}>
+            Previous
+          </Text>
         </TouchableOpacity>
 
         {quesNo + 1 < 10 ? (
           <TouchableOpacity
+            style={{
+              backgroundColor: 'purple',
+              borderRadius: 7,
+              padding: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             onPress={() => {
               setNo(quesNo + 1);
             }}>
-            <Text>Next </Text>
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 16,
+                width: 100,
+                justifyContent: 'center',
+                alignSelf: 'center',
+                alignContent: 'center',
+              }}>
+              Next{' '}
+            </Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
+            style={{backgroundColor: 'purple', borderRadius: 7, padding: 10}}
             onPress={() => {
               navigation.navigate('Result', {
                 score,
@@ -153,8 +189,12 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   heading: {
-    fontSize: 27,
+    marginTop: 20,
+    fontSize: 25,
     fontWeight: 'bold',
+    color: 'black',
+    padding: 2,
+    margin: 20,
   },
   options: {
     marginVertical: 10,
@@ -162,7 +202,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 30,
-    backgroundColor: '#83E3FDff',
+    backgroundColor: 'purple',
     margin: 10,
     borderRadius: 20,
   },
