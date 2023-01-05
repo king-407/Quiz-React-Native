@@ -16,33 +16,33 @@ const Quiz = ({navigation}) => {
     }
   }
   const quizz = async () => {
-    console.log('hi');
     try {
       const result = await fetch(
         `https://opentdb.com/api.php?amount=10&encode=url3986`,
       );
       const data = await result.json();
       setQuestion(data.results[quesNo]);
-      setOptions(
-        shuffleAndAdd(
-          data.results[quesNo].incorrect_answers,
-          data.results[quesNo].correct_answer,
-        ),
-      );
+      console.log(data.results[quesNo].incorrect_answers);
+      const arr = data.results[quesNo].incorrect_answers;
+      const str = data.results[quesNo].correct_answer;
+      const arrNew = shuffleAndAdd(arr, str);
+      setOptions(arrNew);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
+    console.log('hi');
     quizz();
   }, [quesNo]);
   const shuffleAndAdd = (options, str) => {
-    options.push(str);
+    const newArr = [...options];
+    console.log(newArr);
+    newArr.push(str);
+    shuffleArray(newArr);
 
-    shuffleArray(options);
-
-    return options;
+    return newArr;
   };
 
   const handleAnswer = str => {
