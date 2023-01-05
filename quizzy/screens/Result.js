@@ -4,10 +4,11 @@ import Navigation from '../navigation/Navigation';
 
 const Result = ({navigation, route}) => {
   const {score} = route.params;
+  const success = 'https://storyset.com/illustration/awards/cuate';
   return (
     <View>
       <View>
-        <Image style={styles.pic} source={require('../pictures/quiz.png')} />
+        <Image style={styles.pic} source={{uri: success}} />
       </View>
       <View>
         <TouchableOpacity

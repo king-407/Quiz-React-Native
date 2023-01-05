@@ -1,12 +1,14 @@
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Navigation from '../navigation/Navigation';
+import Lottie from 'lottie-react-native';
 
 const Quiz = ({navigation}) => {
   const [questions, setQuestion] = useState('');
   const [options, setOptions] = useState([]);
   const [quesNo, setNo] = useState(0);
   const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
   function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -22,6 +24,7 @@ const Quiz = ({navigation}) => {
       );
       const data = await result.json();
       setQuestion(data.results[quesNo]);
+      setLoading(false);
       console.log(data.results[quesNo].incorrect_answers);
       const arr = data.results[quesNo].incorrect_answers;
       const str = data.results[quesNo].correct_answer;
@@ -54,13 +57,20 @@ const Quiz = ({navigation}) => {
       navigation.navigate('Result', {score});
     }
   };
-
+  if (loading) {
+    return <Lottie source={require('../pictures/loader.json')} autoPlay />;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.heading}>
-          Q.{quesNo + 1}) {decodeURIComponent(questions.question)}
-        </Text>
+        {!loading ? (
+          <Text style={styles.heading}>
+            {' '}
+            Q.{quesNo + 1}) {decodeURIComponent(questions.question)}
+          </Text>
+        ) : (
+          <Text style={styles.heading}>Loading...</Text>
+        )}
       </View>
       {options.length > 2 ? (
         <View style={styles.options}>
